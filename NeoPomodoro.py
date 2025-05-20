@@ -1,0 +1,75 @@
+#Olá GitHUB!
+import customtkinter as ctk
+import time
+import pygame
+from plyer import notification
+import sys
+import os
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS 
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+pygame.init()
+
+janela = ctk.CTk(fg_color='goldenrod')
+janela.geometry('300x400')
+janela.title('Neo-Pomodoro')
+janela.resizable(False,False)
+janela.iconbitmap(resource_path('itens/ico.ico'))
+
+conteudo = ctk.CTkFrame(janela,280,380,fg_color='saddle brown')
+conteudo.place(x=10,y=10)
+
+def iniciar(minutos,identificador):
+    segundos = minutos * 60
+
+    iniciar_btn.configure(state = 'disabled')
+    descansar_btn.configure(state = 'disabled')
+
+    def atualizar():
+        nonlocal segundos
+        if segundos >=0:
+            mins = segundos // 60
+            segs = segundos % 60
+            cronometro.configure(text=f'{mins:02d}:{segs:02d}')
+            segundos -= 1
+            janela.after(1000, atualizar)
+            
+            if segundos == 0:
+                pygame.mixer.music.load(resource_path('itens/bip.mp3'))
+                pygame.mixer.music.play()
+                iniciar_btn.configure(state = 'normal')
+                descansar_btn.configure(state = 'normal')
+                
+                if identificador == 0:
+                    notification.notify(title ='Temporizador Zerado!', message = 'Hora de dar uma Pausa! Ative o Cronômetro de DESCANSO!', timeout = 5)
+                    return 
+                elif identificador == 1:
+                    notification.notify(title ='Temporizador Zerado!', message = 'Hora de Voltar ao FOCO!! Ative o Cronômetro Novamente!', timeout = 5)
+                    return 
+
+    atualizar()
+
+
+
+crono_square = ctk.CTkFrame(conteudo,200,200,fg_color='saddle brown',border_color='white',border_width=2)
+crono_square.place(x=41,y=30)
+
+cronometro = ctk.CTkLabel(crono_square,20,20,text='█ ‿ █',text_color='white',font=('Franklin Gothic',50))
+cronometro.place(x=36,y=68)
+
+iniciar_btn = ctk.CTkButton(conteudo,50,50,text='Começar', text_color='white',fg_color='saddle brown', border_color='white',border_width=1,hover_color='white', command=lambda: iniciar(25,0))
+iniciar_btn.place(x=111,y=260)
+
+descansar_btn = ctk.CTkButton(conteudo,50,50,text='Descanso', text_color='white',fg_color='saddle brown', border_color='white',border_width=1,hover_color='white', command=lambda: iniciar(5,1))
+descansar_btn.place(x=107,y=320)
+
+
+
+
+
+janela.mainloop()
