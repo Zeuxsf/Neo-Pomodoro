@@ -2,9 +2,10 @@
 import customtkinter as ctk
 import time
 import pygame
-from plyer import notification
 import sys
 import os
+from winotify import Notification
+
 
 def resource_path(relative_path):
     try:
@@ -12,6 +13,10 @@ def resource_path(relative_path):
     except AttributeError:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
+
+def notificar(titulo, mensagem):
+    toast = Notification(app_id="Neo-Pomodoro", title=titulo,msg=mensagem,icon=resource_path('itens/ico.ico'))
+    toast.show()
 
 pygame.init()
 
@@ -46,10 +51,10 @@ def iniciar(minutos,identificador):
                 descansar_btn.configure(state = 'normal')
                 
                 if identificador == 0:
-                    notification.notify(title ='Temporizador Zerado!', message = 'Hora de dar uma Pausa! Ative o Cronômetro de DESCANSO!', timeout = 5)
+                    notificar('Temporizador Zerado!','Hora de dar uma Pausa! Ative o Cronômetro de DESCANSO!')
                     return 
                 elif identificador == 1:
-                    notification.notify(title ='Temporizador Zerado!', message = 'Hora de Voltar ao FOCO!! Ative o Cronômetro Novamente!', timeout = 5)
+                    notificar('Temporizador Zerado!','Hora de Voltar ao FOCO!! Ative o Cronômetro Novamente!')
                     return 
 
     atualizar()

@@ -5,7 +5,7 @@ a = Analysis(
     ['NeoPomodoro.py'],
     pathex=[],
     binaries=[],
-    datas=[('itens/ico.ico', 'itens'), ('itens/bip.mp3', 'itens')],
+    datas=[('itens', 'itens')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
