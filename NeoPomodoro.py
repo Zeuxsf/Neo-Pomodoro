@@ -30,19 +30,31 @@ conteudo = ctk.CTkFrame(janela,280,380,fg_color='saddle brown')
 conteudo.place(x=10,y=10)
 
 def iniciar(minutos,identificador):
+    global descanso_longo_contador 
     segundos = minutos * 60
+
+    descanso_longo_contador += 1
+    descanso_longo_contador_text.configure(text = descanso_longo_contador)
+
+    if descanso_longo_contador == 4:
+        descanso_longo_contador_text.configure(text = '0')
+        segundos = 15 * 60
+        descanso_longo_contador = 0
 
     iniciar_btn.configure(state = 'disabled')
     descansar_btn.configure(state = 'disabled')
 
     def atualizar():
         nonlocal segundos
+        global descanso_longo_contador
+
         if segundos >=0:
             mins = segundos // 60
             segs = segundos % 60
             cronometro.configure(text=f'{mins:02d}:{segs:02d}')
             segundos -= 1
             janela.after(1000, atualizar)
+
             
             if segundos == 0:
                 pygame.mixer.music.load(resource_path('itens/bip.mp3'))
@@ -72,6 +84,10 @@ iniciar_btn.place(x=111,y=260)
 
 descansar_btn = ctk.CTkButton(conteudo,50,50,text='Descanso', text_color='white',fg_color='saddle brown', border_color='white',border_width=1,hover_color='white', command=lambda: iniciar(5,1))
 descansar_btn.place(x=107,y=320)
+
+descanso_longo_contador = 0
+descanso_longo_contador_text = ctk.CTkLabel(conteudo,text='0', text_color='white',font=('',20))
+descanso_longo_contador_text.place(x=245,y=335)
 
 
 
