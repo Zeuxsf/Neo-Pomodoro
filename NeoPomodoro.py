@@ -33,13 +33,14 @@ def iniciar(minutos,identificador):
     global descanso_longo_contador 
     segundos = minutos * 60
 
-    descanso_longo_contador += 1
-    descanso_longo_contador_text.configure(text = descanso_longo_contador)
+    if identificador == 1:
+        descanso_longo_contador += 1
+        descanso_longo_contador_text.configure(text = descanso_longo_contador)
 
-    if descanso_longo_contador == 4:
-        descanso_longo_contador_text.configure(text = '0')
-        segundos = 15 * 60
-        descanso_longo_contador = 0
+        if descanso_longo_contador == 4:
+            descanso_longo_contador_text.configure(text = '0')
+            segundos = 15 * 60
+            descanso_longo_contador = 0
 
     iniciar_btn.configure(state = 'disabled')
     descansar_btn.configure(state = 'disabled')
